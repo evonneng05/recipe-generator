@@ -1,4 +1,3 @@
-# Remove unused imports
 import streamlit as st
 import google.generativeai as genai
 from PIL import Image
@@ -11,13 +10,13 @@ from dotenv import load_dotenv
 torch.classes.__path__ = []
 load_dotenv()
 
-# Replace the API key configuration with
 genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
 
 def generate_recipes(ingredients, dietary, food_type):
     print("Generating recipes...")
     prompt = f"""
     Generate 3 unique recipes using these ingredients: {ingredients}. If needed, you can add other ingredients. For each ingredient, can you estimate the typical price range in Singapore dollars?
+    For each ingredient, add in the weight required as well.
     Dietary Restrictions: {dietary}.
     Preferred Food Type: {food_type}.
     In the steps, add in numbers before the step. (e.g. 1. Wash the rice)
@@ -57,6 +56,7 @@ def generate_recipes(ingredients, dietary, food_type):
     print("Recipes generated successfully!")
 
     cleaned_response = response.strip().strip("```json").strip("```")
+    print(cleaned_response)
 
     try:
         recipes = json.loads(cleaned_response)["recipes"]
@@ -99,17 +99,15 @@ def add_links(ing):
     ing['coldstorage'] = f'https://coldstorage.com.sg/en/search?keyword={ing["name"]}&page=1'.replace(" ", "%20")
 
 def extract_missing_ingredients(recipe_ingredients, user_ingredients):
-    recipe_ingredients_set = set(ing["name"].lower() for ing in recipe_ingredients)
-    user_ingredients_set = set(map(str.strip, user_ingredients.lower().split(",")))
-    missing_names = recipe_ingredients_set - user_ingredients_set
-    
-    # Create a dictionary of missing ingredients with their costs
+    print("Extracting missing ingredients...")
+    user_ingredients_list = [ing.strip().lower() for ing in user_ingredients.split(",")]
     missing_ingredients = []
-    for ing in recipe_ingredients:
-        if ing["name"].lower() in missing_names:
+    for recipe_ing in recipe_ingredients:
+        recipe_ing_name = recipe_ing["name"].lower()
+        if not any(user_ing in recipe_ing_name for user_ing in user_ingredients_list if user_ing):
             missing_ingredients.append({
-                "name": ing["name"],
-                "cost": ing["cost"]
+                "name": recipe_ing["name"],
+                "cost": recipe_ing["cost"]
             })
     
     return missing_ingredients
@@ -182,8 +180,6 @@ def format_recipe_html(recipe, for_pdf=False):
 def create_pdf(recipe):
     """Generates a PDF from recipes using formatted HTML."""
     file_name = recipe["image_path"].replace(".png", ".pdf").replace("_image", "")
-    
-    # Get absolute path for the image
     current_dir = os.path.dirname(os.path.abspath(__file__))
     image_path = os.path.join(current_dir, recipe["image_path"])
     
@@ -206,8 +202,7 @@ def create_pdf(recipe):
     </style></head>
     <body>
     """
-    
-    # Add the image using file:// protocol and absolute path
+
     recipe_html = format_recipe_html(recipe, for_pdf=True)
     if os.path.exists(image_path):
         recipe_html = recipe_html.replace(
@@ -231,10 +226,9 @@ def create_pdf(recipe):
 st.title("🍓 Recipe Generator 🍰")
 
 st.subheader("Input ingredients from your fridge! 🧊")
-fridge_image = "fridge.jpg"  # Replace with an actual image file
+fridge_image = "fridge.jpg"  
 st.image(fridge_image, use_container_width=True)
 
-# Define ingredient input sections
 def input_section(label):
     return st.text_area(label, "", key=label.replace(" ", "_"))
 
