@@ -17,6 +17,8 @@ def generate_recipes(ingredients, dietary, food_type):
     Generate 3 unique recipes using these ingredients: {ingredients}. If needed, you can add other ingredients. 
     For each ingredient, can you estimate the typical price range in Singapore dollars?
     For each ingredient, add in the weight required as well.
+    Please don't add any comments such as: "// For thickening, optional"
+    Please ensure that the output JSON is parsable.
     Dietary Restrictions: {dietary}.
     Preferred Food Type: {food_type}.
     In the steps, add in numbers before the step. (e.g. 1. Wash the rice)
