@@ -1,0 +1,8 @@
+streamlit
+google-generativeai
+Pillow
+pdfkit
+python-dotenv
+torch
+diffusers
+python-dotenv
