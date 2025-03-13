@@ -25,7 +25,7 @@ A smart recipe generator that helps you create delicious meals based on ingredie
 
 1. Clone the repository
 ```bash
-git clone <your-repository-url>
+git clone <https://github.com/evonneng05/recipe-generator.git>
 ```
 
 2. Install dependencies
