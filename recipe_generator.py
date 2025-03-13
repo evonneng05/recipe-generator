@@ -1,6 +1,5 @@
 import streamlit as st
 import google.generativeai as genai
-from PIL import Image
 import pdfkit
 import json
 import os
@@ -15,7 +14,8 @@ genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
 def generate_recipes(ingredients, dietary, food_type):
     print("Generating recipes...")
     prompt = f"""
-    Generate 3 unique recipes using these ingredients: {ingredients}. If needed, you can add other ingredients. For each ingredient, can you estimate the typical price range in Singapore dollars?
+    Generate 3 unique recipes using these ingredients: {ingredients}. If needed, you can add other ingredients. 
+    For each ingredient, can you estimate the typical price range in Singapore dollars?
     For each ingredient, add in the weight required as well.
     Dietary Restrictions: {dietary}.
     Preferred Food Type: {food_type}.

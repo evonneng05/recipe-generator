@@ -1,7 +1,5 @@
 import torch
 from diffusers import StableDiffusionPipeline
-from PIL import Image
-import os
 
 def setup_stable_diffusion():
     """Initialize and return the Stable Diffusion pipeline"""
