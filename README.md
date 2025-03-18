@@ -1,7 +1,7 @@
 # 🍳 Recipe Generator
 
-A smart recipe generator that helps you create delicious meals based on ingredients you have in your fridge. Built with Streamlit and powered by Google's Gemini AI.
-/n<a href="https://youtu.be/BGbdfH671M8">📹 Video Demo</a>
+A smart recipe generator that helps you create delicious meals based on ingredients you have in your fridge. Built with Streamlit and powered by Google's Gemini AI.<br/>
+📹 <a href="https://youtu.be/BGbdfH671M8">Video Demo</a>
 
 ## ✨ Features
 
